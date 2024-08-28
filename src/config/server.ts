@@ -44,9 +44,9 @@ class Server {
     private async dbConnection() {
         try {
             await connectDB();
-            console.log("Database connected successfully.");
+            console.log(`base de datos: ${process.env.DB_NAME} conectada`);
         } catch (error) {
-            console.error("Database connection failed:", error);
+            console.error("Error al conectar a la DB:", error);
         }
     }
 
