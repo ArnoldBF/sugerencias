@@ -1,10 +1,11 @@
 import express, { Application } from "express";
 import fileUpload from "express-fileupload";
-import { connectDB } from "../database/dbConection";
+import { connectDB, sequelize } from "../database/dbConection";
 import buscadorRouter from "../routes/buscadorRouter";
+import userRouter from "../routes/userRouter";
 import cors from "cors";
 import path from "path";
-
+import User from "../models/user";
 class Server {
     public app: Application;
     public port: string;
@@ -18,6 +19,7 @@ class Server {
 
         this.paths = {
             buscar: "/api/buscar",
+            user: "/api/users",
         };
 
         this.dbConnection();
@@ -45,6 +47,9 @@ class Server {
         try {
             await connectDB();
             console.log(`base de datos: ${process.env.DB_NAME} conectada`);
+            //Sincronizar tablas
+            await User.sync({ force: false });
+            console.log("Tablas sincronizadas correctamente");
         } catch (error) {
             console.error("Error al conectar a la DB:", error);
         }
@@ -52,6 +57,7 @@ class Server {
 
     private routes() {
         this.app.use(this.paths.buscar, buscadorRouter);
+        this.app.use(this.paths.user, userRouter);
     }
 
     public listen() {

@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import User from "../models/user";
 
 const sequelize = new Sequelize({
     dialect: "mssql",

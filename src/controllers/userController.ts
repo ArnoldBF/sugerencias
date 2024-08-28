@@ -11,5 +11,13 @@ export const createUser = async (req: Request, res: Response) => {
                 message: "Todos los campos son requeridos",
             });
         }
-    } catch (error) {}
+
+        //Crear usuario
+
+        const user = await User.create({ username, email, password });
+        return res.status(201).json(user);
+    } catch (error) {
+        console.error("Error al crear el usuario", error);
+        return res.status(500).json({ message: "Error interno del servidor" });
+    }
 };
